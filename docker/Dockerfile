@@ -27,5 +27,7 @@ RUN apk add --no-cache ca-certificates tini
 COPY --from=build /go/src/github.com/Pyrinpyi/pyipad/pyipad /app/
 COPY --from=build /go/src/github.com/Pyrinpyi/pyipad/infrastructure/config/sample-pyipad.conf /app/
 
+RUN mkdir -p /data
+
 USER nobody
-ENTRYPOINT [ "/sbin/tini", "--" ]
+ENTRYPOINT [ "/app/pyipad", "/utxoindex", "--appdir=/data" ]
