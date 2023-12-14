@@ -17,7 +17,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASS }}
-      - name: Build the docker image and push
+      - name: Build the node docker image and push
         run: |
-          docker build . --file docker/Dockerfile --tag overcookedpanda/pyipad:latest
+          docker build . --file docker/Dockerfile.node --tag overcookedpanda/pyipad:latest
           docker push overcookedpanda/pyipad:latest
+      - name: Build the wallet docker image and push
+        run: |
+          docker build . --file docker/Dockerfile.wallet --tag overcookedpanda/pyrinwallet:latest
+          docker push overcookedpanda/pyrinwallet:latest
