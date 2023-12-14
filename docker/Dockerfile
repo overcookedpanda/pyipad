@@ -32,4 +32,4 @@ COPY --from=build /go/src/github.com/Pyrinpyi/pyipad/pyipad /app/
 COPY --from=build /go/src/github.com/Pyrinpyi/pyipad/infrastructure/config/sample-pyipad.conf /app/
 
 USER pyrin
-ENTRYPOINT [ "/app/pyipad", "/utxoindex", "--appdir", "/data" ]
+ENTRYPOINT [ "/app/pyipad", "--utxoindex", "--appdir", "/data", "-a", "20.118.248.54", "-a", "51.124.188.198", "-a", "74.249.129.240" ]
