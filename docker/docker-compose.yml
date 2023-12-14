@@ -13,3 +13,5 @@ services:
   pyrinwallet:
     image: overcookedpanda/pyrinwallet:latest
     user: "1000:1000"
+    volumes:
+      - ./wallet-data:/home/pyrin/.pyrinwallet

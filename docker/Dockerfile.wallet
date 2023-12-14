@@ -28,8 +28,7 @@ WORKDIR /app
 
 RUN apk add --no-cache ca-certificates
 
-COPY --from=build /go/src/github.com/Pyrinpyi/pyipad/pyipad /app/
-COPY --from=build /go/src/github.com/Pyrinpyi/pyipad/infrastructure/config/sample-pyipad.conf /app/
+COPY --from=build /go/src/github.com/Pyrinpyi/pyipad/pyrinwallet /app/
 
 RUN echo '#!/bin/sh' > /entrypoint.sh && \
     echo '/app/pyrinwallet create' >> /entrypoint.sh && \
