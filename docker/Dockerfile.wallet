@@ -39,7 +39,7 @@ RUN chmod +x /app/pyrinwallet
 
 RUN echo '#!/bin/sh' > /entrypoint.sh && \
     echo '/app/pyrinwallet create' >> /entrypoint.sh && \
-    echo '/app/pyrinwallet start-daemon' >> /entrypoint.sh && \
+    echo '/app/pyrinwallet start-daemon --rpcserver pyipad' >> /entrypoint.sh && \
     echo '/app/pyrinwallet new-address' >> /entrypoint.sh && \
     echo 'exec "$@"' >> /entrypoint.sh
 
