@@ -30,4 +30,4 @@ COPY --from=build /go/src/github.com/Pyrinpyi/pyipad/infrastructure/config/sampl
 RUN mkdir -p /data
 
 USER nobody
-ENTRYPOINT [ "/app/pyipad", "/utxoindex", "--appdir=/data" ]
+ENTRYPOINT [ "/app/pyipad", "/utxoindex", "--appdir", "/data" ]
