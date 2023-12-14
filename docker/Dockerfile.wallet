@@ -33,7 +33,7 @@ WORKDIR /app
 
 RUN apk add --no-cache ca-certificates
 
-COPY --from=build /go/src/github.com/Pyrinpyi/pyipad/pyrinwallet /app/
+COPY --from=build /go/src/github.com/Pyrinpyi/pyipad/cmd/pyrinwallet/pyrinwallet /app/
 
 RUN chmod +x /app/pyrinwallet
 
