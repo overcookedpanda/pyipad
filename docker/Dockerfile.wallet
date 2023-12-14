@@ -39,6 +39,7 @@ RUN echo '#!/bin/sh' > /entrypoint.sh && \
     echo 'exec "$@"' >> /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh
+RUN chown -R 1000:1000 /app
 
 USER pyrin
 ENTRYPOINT ["/entrypoint.sh"]
