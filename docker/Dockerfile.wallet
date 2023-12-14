@@ -1,0 +1,43 @@
+# -- multistage docker build: stage #1: build stage
+FROM golang:1.19-alpine AS build
+
+RUN mkdir -p /go/src/github.com/Pyrinpyi/pyipad
+
+WORKDIR /go/src/github.com/Pyrinpyi/pyipad
+
+RUN apk add --no-cache curl git openssh binutils gcc musl-dev
+
+COPY go.mod .
+COPY go.sum .
+
+
+# Cache pyipad dependencies
+RUN go mod download
+
+COPY . .
+
+RUN go build $FLAGS -o pyipad .
+
+# --- multistage docker build: stage #2: runtime image
+FROM alpine
+
+RUN addgroup -g 1000 pyrin && \
+    adduser -u 1000 -G pyrin -D pyrin
+
+WORKDIR /app
+
+RUN apk add --no-cache ca-certificates
+
+COPY --from=build /go/src/github.com/Pyrinpyi/pyipad/pyipad /app/
+COPY --from=build /go/src/github.com/Pyrinpyi/pyipad/infrastructure/config/sample-pyipad.conf /app/
+
+RUN echo '#!/bin/sh' > /entrypoint.sh && \
+    echo '/app/pyrinwallet create' >> /entrypoint.sh && \
+    echo '/app/pyrinwallet start-daemon' >> /entrypoint.sh && \
+    echo '/app/pyrinwallet new-address' >> /entrypoint.sh && \
+    echo 'exec "$@"' >> /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
+
+USER pyrin
+ENTRYPOINT ["/entrypoint.sh"]

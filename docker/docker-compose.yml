@@ -9,3 +9,7 @@ services:
       - "13110:13110" # RPC
     volumes:
       - ./data:/data
+
+  pyrinwallet:
+    image: overcookedpanda/pyrinwallet:latest
+    user: "1000:1000"
