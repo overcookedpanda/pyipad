@@ -5,6 +5,7 @@ services:
     image: overcookedpanda/pyipad:latest
     user: "1000:1000"
     ports:
-      - "16111:16111"
+      - "13111:13111" # P2P
+      - "13110:13110" # RPC
     volumes:
       - ./data:/data
