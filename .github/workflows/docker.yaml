@@ -25,3 +25,7 @@ jobs:
         run: |
           docker build . --file docker/Dockerfile.wallet --tag overcookedpanda/pyrinwallet:latest
           docker push overcookedpanda/pyrinwallet:latest
+      - name: Build the combined docker image and push
+        run: |
+          docker build . --file docker/Dockerfile --tag overcookedpanda/pyrin:latest
+          docker push overcookedpanda/pyrin:latest

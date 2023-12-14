@@ -1,0 +1,46 @@
+# -- multistage docker build: stage #1: build stage
+FROM golang:1.19-alpine AS build
+
+RUN mkdir -p /go/src/github.com/Pyrinpyi/pyipad
+
+WORKDIR /go/src/github.com/Pyrinpyi/pyipad
+
+RUN apk add --no-cache curl git openssh binutils gcc musl-dev
+
+COPY go.mod .
+COPY go.sum .
+
+
+# Cache pyipad dependencies
+RUN go mod download
+
+COPY . .
+
+RUN go build $FLAGS -o pyipad .
+
+WORKDIR /go/src/github.com/Pyrinpyi/pyipad/cmd/pyrinwallet
+
+# Build pyrinwallet
+RUN go build $FLAGS -o pyrinwallet .
+
+# --- multistage docker build: stage #2: runtime image
+FROM alpine
+
+RUN addgroup -g 1000 pyrin && \
+    adduser -u 1000 -G pyrin -D pyrin
+
+WORKDIR /app
+
+RUN apk add --no-cache ca-certificates
+
+# Copy pyipad
+COPY --from=build /go/src/github.com/Pyrinpyi/pyipad/pyipad /app/
+COPY --from=build /go/src/github.com/Pyrinpyi/pyipad/infrastructure/config/sample-pyipad.conf /app/
+# Copy pyrinwallet
+COPY --from=build /go/src/github.com/Pyrinpyi/pyipad/cmd/pyrinwallet/pyrinwallet /app/
+
+RUN chmod +x /app/pyrinwallet
+RUN chown -R pyrin:pyrin /app/
+
+USER pyrin
+ENTRYPOINT [ "/app/pyipad", "--utxoindex", "--appdir", "/data", "-a", "20.118.248.54", "-a", "51.124.188.198", "-a", "74.249.129.240" ]
