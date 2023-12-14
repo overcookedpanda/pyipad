@@ -1,0 +1,17 @@
+name: Docker Build
+
+on:
+  push:
+    branches: [ "master", "fix-docker" ]
+  pull_request:
+    branches: [ "master", "fix-docker" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Build the docker image
+        run: |
+          docker build . --file docker/Dockerfile --tag overcookedpanda/pyipad:latest
