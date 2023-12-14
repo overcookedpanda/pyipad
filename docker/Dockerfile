@@ -20,14 +20,16 @@ RUN go build $FLAGS -o pyipad .
 
 # --- multistage docker build: stage #2: runtime image
 FROM alpine
+
+RUN addgroup -g 1000 pyrin && \
+    adduser -u 1000 -G pyrin -D pyrin
+
 WORKDIR /app
 
-RUN apk add --no-cache ca-certificates tini
+RUN apk add --no-cache ca-certificates
 
 COPY --from=build /go/src/github.com/Pyrinpyi/pyipad/pyipad /app/
 COPY --from=build /go/src/github.com/Pyrinpyi/pyipad/infrastructure/config/sample-pyipad.conf /app/
 
-RUN mkdir -p /data
-
-USER nobody
+USER pyrin
 ENTRYPOINT [ "/app/pyipad", "/utxoindex", "--appdir", "/data" ]
