@@ -30,6 +30,8 @@ RUN apk add --no-cache ca-certificates
 
 COPY --from=build /go/src/github.com/Pyrinpyi/pyipad/cmd/pyrinwallet/pyrinwallet /app/
 
+RUN chmod +x /app/pyrinwallet
+
 RUN echo '#!/bin/sh' > /entrypoint.sh && \
     echo '/app/pyrinwallet create' >> /entrypoint.sh && \
     echo '/app/pyrinwallet start-daemon' >> /entrypoint.sh && \
