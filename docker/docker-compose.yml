@@ -2,16 +2,11 @@ version: '3.8'
 
 services:
   pyipad:
-    image: overcookedpanda/pyipad:latest
+    image: overcookedpanda/pyrin:latest
     user: "1000:1000"
     ports:
       - "13111:13111" # P2P
       - "13110:13110" # RPC
     volumes:
       - ./data:/data
-
-  pyrinwallet:
-    image: overcookedpanda/pyrinwallet:latest
-    user: "1000:1000"
-    volumes:
       - ./wallet-data:/home/pyrin/.pyrinwallet
