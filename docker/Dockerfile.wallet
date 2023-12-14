@@ -28,14 +28,14 @@ WORKDIR /app
 
 RUN apk add --no-cache ca-certificates
 
-COPY --from=build /go/src/github.com/Pyrinpyi/pyipad/cmd/pyrinwallet/pyrinwallet /app/
+COPY --from=build /go/src/github.com/Pyrinpyi/pyipad /app/
 
-RUN chmod +x /app/pyrinwallet
+RUN chmod +x /app/cmd/pyrinwallet/pyrinwallet
 
 RUN echo '#!/bin/sh' > /entrypoint.sh && \
-    echo '/app/pyrinwallet create' >> /entrypoint.sh && \
-    echo '/app/pyrinwallet start-daemon' >> /entrypoint.sh && \
-    echo '/app/pyrinwallet new-address' >> /entrypoint.sh && \
+    echo '/app/cmd/pyrinwallet/pyrinwallet create' >> /entrypoint.sh && \
+    echo '/app/cmd/pyrinwallet/pyrinwallet start-daemon' >> /entrypoint.sh && \
+    echo '/app/cmd/pyrinwallet/pyrinwallet new-address' >> /entrypoint.sh && \
     echo 'exec "$@"' >> /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh
